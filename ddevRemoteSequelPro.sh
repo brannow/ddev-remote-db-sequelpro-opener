@@ -25,19 +25,18 @@ portLoader="/Users/benjamin/Documents/Scripts/ddevDBSequelProPortString.sh $sshH
 ###################################
 
 
-regex='([0-9]+)'
+regex=':([0-9]{4,7})'
 s=$($portLoader)
-port="0", lastResult="0"
+port=0
 while [[ $s =~ $regex ]]; do
   s=${s#*"${BASH_REMATCH[1]}"}
-  if [ $lastResult == "0" ]
-  then
-    lastResult="${BASH_REMATCH[1]}"
-  else
-    port="$lastResult"
-    lastResult="${BASH_REMATCH[1]}"
-  fi
+  port="${BASH_REMATCH[1]}"
 done
+
+if [[ $port -eq 0 ]]; then
+   echo "Port not found"
+   exit
+fi
 
 
 spt="<?xml version=\"1.0\" encoding=\"UTF-8\"?>
